@@ -18,4 +18,6 @@
  
  
  - **Ricordare che c'è api ufficiale di tensorflow per object tracking !!!**
+ 
+ - **Dlib?** https://www.pyimagesearch.com/2018/10/22/object-tracking-with-dlib/
   
