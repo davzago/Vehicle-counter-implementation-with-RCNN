@@ -4,3 +4,5 @@ visionEnv/
 .vscode/
 
 .ipynb_checkpoints/
+
+cvblob/

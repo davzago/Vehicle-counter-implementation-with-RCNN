@@ -23,37 +23,17 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 2,
-   "metadata": {
-    "tags": []
-   },
-   "outputs": [
-    {
-     "output_type": "stream",
-     "name": "stdout",
-     "text": "banana\n"
-    }
-   ],
-   "source": [
-    "print(\"banana\")"
-   ]
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
   },
   {
-   "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {
-    "tags": []
-   },
-   "outputs": [
-    {
-     "output_type": "stream",
-     "name": "stdout",
-     "text": "1 2 3\n"
-    }
-   ],
    "source": [
-    "print(1,2,3)"
-   ]
+    "**caadsd** "
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
   },
   {
    "cell_type": "code",
