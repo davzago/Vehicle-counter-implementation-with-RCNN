@@ -15,3 +15,9 @@
 implement a simple detector using frame differencing in order to obtain bounding boxes for the veichles, forward the image with bounding boxes to a tracker wich will assign the same id to the same vaichle in different frames by calculating the centroid of the rectangle and finding the closest centroid of the next frame, we need to set a number of frame in which the id will be forgotten 
 
 After this we will substitute the simple frame differencing detectro with a RCNN or a YOLO and compare performance
+
+## Now Using
+
+https://www.pyimagesearch.com/2018/07/23/simple-object-tracking-with-opencv/
+
+https://www.analyticsvidhya.com/blog/2020/04/vehicle-detection-opencv-python/
