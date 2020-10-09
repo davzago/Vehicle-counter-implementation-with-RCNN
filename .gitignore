@@ -6,3 +6,5 @@ visionEnv/
 .ipynb_checkpoints/
 
 cvblob/
+
+data/video1.mp4
