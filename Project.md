@@ -30,7 +30,13 @@ by playing with the dilate kernel i see that the bigger it is the more dilated t
 
 ### Contours retrival method
 
-cv2.findContours() finds the contours in a binary image, the retrival method decides wheter to get all the contours heirarchy (cv2.RETR_TREE) which baiscally is a tree where a more external contour has some son contours internally, in our case i think it's better to keep only the external contours since we only need a bounding box for the veichles
+cv2.findContours() finds the contours in a binary image, the retrival method decides wheter to get all the contours heirarchy (cv2.RETR_TREE) which baiscally is a tree where a more external contour has some son contours internally, in our case i think it's better to keep only the external contours since we only need a bounding box for the veichles 
+
+## Obtain a more clear difference
+
+- The threshold used to transform the grayscale image and the size og the dilate kernel are two parameters wich are important in order to have a good detection, also they have to be tuned together, a high threshold leads us to not include some parts of the veichle risking multiple detection for trucks, dilatation can compensate for that but if we choose a kernel that is too big we risk to agglomerate more veichles 
+- to emiminte the part of the background that goes trough the difference we could also not search for veichles in a specific area but this is not possible in the lanes otherwise we would not find veichles
+- Also to obtain a better difference i subtract frames that are 10 frames apart
 
 ### frame differencing problems
 
@@ -39,8 +45,6 @@ The frame differencing method seems useful but it has very clear limits:
 - if 2 veichles are overlapping it will detect one single veichle since the contour will contain both the veichles 
 - When detecting a truck this method will find more veichles this happens because a truck's side is plain, this leads the difference between frame to have disconnected parts even it's a single truck
 - If the camera is shaking frame differencing will highlight some part of the background which could be detected as veichles, if the camera shakes very hard this method is impossible to use 
-- The threshold used to transform the grayscale image and the size og the dilate kernel are two parameters wich are important in order to have a good detection, also they have to be tuned together, a high threshold leads us to not include some parts of the veichle risking multiple detection for trucks, dilatation can compensate for that but if we choose a kernel that is too big we risk to agglomerate more veichles 
-- to emiminte the part of the background that goes trough the difference we could also not search for veichles in a specific area but this is not possible in the lanes otherwise we would not find veichles
 
 this problem makes so this method is not usable in high traffic areas where we can have multiple veichles overlapping, to solve this problem we could use blob(?) detector wich compares pixels in order to detect the objects
 
