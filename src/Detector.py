@@ -46,23 +46,32 @@ class Detector():
         else: print("select an existing folder")
 
     def draw_bbox(self):
-        for img in self.diff_images:
-            contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-            cv2.drawContours(img, contours, -1, (127,200,0), 2)
-            for i, center in enumerate(contours):
+        for i in range(0, len(self.diff_images)-10):
+            contours, _ = cv2.findContours(self.diff_images[i], cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+            #cv2.drawContours(img, contours, -1, (127,200,0), 2)
+            rec = []
+            for _, center in enumerate(contours):
                 if cv2.contourArea(center) > 600: # this makes so we only take useful contours
                     x,y,w,h = cv2.boundingRect(center)
                     top_left = (x,y)
                     bottom_right = (x+w,y+h)
-                    cv2.rectangle(img, top_left, bottom_right, (127,200,0), 1)
+                    rec.append((top_left, bottom_right)) 
+                    cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)
+            if len(rec)>0:
+                self.rects.append(rec)
+    
+    def detect(self, path_to_diff):
+        detec.img_diff()
+        detec.threshold_and_dilate()
+        detec.draw_bbox()
+        detec.save_diff_images(path_to_diff)
+
 
 
 
 
 detec = Detector("data/frames")
-detec.img_diff()
-detec.threshold_and_dilate()
-detec.draw_bbox()
-detec.save_diff_images("data/diff")
+detec.detect("data/diff")
+
  
         
