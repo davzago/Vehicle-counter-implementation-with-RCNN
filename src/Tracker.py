@@ -24,6 +24,16 @@ class Tracker():
                 self.dis_objects[obj] += 1
                 if self.dis_objects[obj] > self.max_dis_frames:
                     self.unregister(obj)
-        return self.objects
+            return self.objects
+
+        centers = np.zeros((len(bounding_boxes), 2), dtype="int")
+
+        for i,((x1,y1),(x2,y2)) in enumerate(bounding_boxes):
+            cx = int((x1+x2)/2)
+            cy = int((y1+y2)/2)
+            centers[i] = (cx, cy)
+
         
-         
+
+
+

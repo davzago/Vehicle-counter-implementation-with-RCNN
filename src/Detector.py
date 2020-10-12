@@ -72,6 +72,8 @@ class Detector():
 
 detec = Detector("data/frames")
 detec.detect("data/diff")
-
+for i,((x1,y1),(x2,y2)) in enumerate(detec.rects[875]):
+    print(i, x1, y1, x2, y2)
  
+        
         
