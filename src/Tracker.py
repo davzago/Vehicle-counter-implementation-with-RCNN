@@ -20,7 +20,7 @@ class Tracker():
     
     def update(self, bounding_boxes):
         if len(bounding_boxes) == 0:
-            for obj in range(0,self.objectID):
+            for obj in list(self.dis_objects.keys()):
                 self.dis_objects[obj] += 1
                 if self.dis_objects[obj] > self.max_dis_frames:
                     self.unregister(obj)

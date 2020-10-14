@@ -58,8 +58,8 @@ class Detector():
                     rec.append((top_left, bottom_right))
                     cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)                 
                         
-            if len(rec)>0:
-                self.rects.append(rec)
+            
+            self.rects.append(rec)
     
     def detect(self, path_to_diff):
         self.img_diff()
