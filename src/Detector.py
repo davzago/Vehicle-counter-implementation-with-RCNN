@@ -16,10 +16,10 @@ class Detector():
 
     # loops over the frames of the video to obtain the difference between consecutive frames    
     def img_diff(self):
-        for i in range (0,len(self.images)-10):
+        for i in range (0,len(self.images)-1):
             # first we convert the frame to grayscale
             frame1 = cv2.cvtColor(self.images[i], cv2.COLOR_BGR2GRAY)
-            frame2 = cv2.cvtColor(self.images[i+10], cv2.COLOR_BGR2GRAY) # added skip frame to have better differences
+            frame2 = cv2.cvtColor(self.images[i+1], cv2.COLOR_BGR2GRAY) # added skip frame to have better differences
             # then we compute the difference between the 2 images
             diff = cv2.absdiff(frame1,frame2)
             self.diff_images.append(diff)
@@ -46,34 +46,35 @@ class Detector():
         else: print("select an existing folder")
 
     def draw_bbox(self):
-        for i in range(0, len(self.diff_images)-10):
+        for i in range(0, len(self.diff_images)):
             contours, _ = cv2.findContours(self.diff_images[i], cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-            #cv2.drawContours(img, contours, -1, (127,200,0), 2)
+            #cv2.drawContours(self.diff_images[i], contours, -1, (127,200,0), 2)
             rec = []
             for _, center in enumerate(contours):
                 if cv2.contourArea(center) > 600: # this makes so we only take useful contours
                     x,y,w,h = cv2.boundingRect(center)
                     top_left = (x,y)
                     bottom_right = (x+w,y+h)
-                    rec.append((top_left, bottom_right)) 
-                    cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)
+                    rec.append((top_left, bottom_right))
+                    cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)                 
+                        
             if len(rec)>0:
                 self.rects.append(rec)
     
     def detect(self, path_to_diff):
-        detec.img_diff()
-        detec.threshold_and_dilate()
-        detec.draw_bbox()
-        detec.save_diff_images(path_to_diff)
+        self.img_diff()
+        self.threshold_and_dilate()
+        self.draw_bbox()
+        self.save_diff_images(path_to_diff)
 
 
 
 
 
-detec = Detector("data/frames")
-detec.detect("data/diff")
-for i,((x1,y1),(x2,y2)) in enumerate(detec.rects[875]):
-    print(i, x1, y1, x2, y2)
+#detec = Detector("data/frames")
+#detec.detect("data/diff")
+#for i,((x1,y1),(x2,y2)) in enumerate(detec.rects[875]):
+#    print(i, x1, y1, x2, y2)
  
         
         

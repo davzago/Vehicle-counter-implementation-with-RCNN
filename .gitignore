@@ -8,3 +8,5 @@ visionEnv/
 cvblob/
 
 data/
+
+src/__pycache__/
