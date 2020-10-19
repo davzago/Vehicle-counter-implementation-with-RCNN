@@ -45,6 +45,7 @@ The frame differencing method seems useful but it has very clear limits:
 - if 2 veichles are overlapping it will detect one single veichle since the contour will contain both the veichles 
 - When detecting a truck this method will find more veichles this happens because a truck's side is plain, this leads the difference between frame to have disconnected parts even it's a single truck
 - If the camera is shaking frame differencing will highlight some part of the background which could be detected as veichles, if the camera shakes very hard this method is impossible to use 
+- Shadows will get counted as part of the veichle 
 
 this problem makes so this method is not usable in high traffic areas where we can have multiple veichles overlapping, to solve this problem we could use blob(?) detector wich compares pixels in order to detect the objects
 
