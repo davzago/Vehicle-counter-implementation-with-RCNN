@@ -51,10 +51,13 @@ this problem makes so this method is not usable in high traffic areas where we c
 
 ## Links for data and models 
 
-- https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf1_detection_zoo.md#mobile-models 
+- https://www.pyimagesearch.com/2020/07/06/region-proposal-object-detection-with-opencv-keras-and-tensorflow/https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf1_detection_zoo.md#mobile-models 
 - https://storage.googleapis.com/openimages/web/visualizer/index.html?set=valtest&type=detection&c=%2Fm%2F07yv9
 - https://towardsdatascience.com/step-by-step-r-cnn-implementation-from-scratch-in-python-e97101ccde55
 - https://www.pyimagesearch.com/2020/06/29/opencv-selective-search-for-object-detection/
+- https://www.pyimagesearch.com/2020/07/06/region-proposal-object-detection-with-opencv-keras-and-tensorflow/
+- https://www.pyimagesearch.com/2020/07/13/r-cnn-object-detection-with-keras-tensorflow-and-deep-learning/
 
+## possible dataset
 
-
+http://podoce.dinf.usherbrooke.ca/challenge/dataset/
