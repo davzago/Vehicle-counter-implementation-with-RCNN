@@ -25,7 +25,4 @@ def get_data(number_of_images_for_each_class):
 			data.append(image)
 			labels.append(folder)
 	labels = np.unique(labels, return_inverse=True)[1]
-	one_hot = []
-	for l in labels:
-		one_hot.append(np.eye(8)[l])
-	return data, one_hot
+	return np.array(data), np.array(labels)

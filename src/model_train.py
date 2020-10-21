@@ -24,4 +24,14 @@ headModel = Dropout(0.5)(headModel)
 headModel = Dense(10, activation="softmax")(headModel)
 
 model = Model(inputs=baseModel.input, outputs=headModel)
-model.summary()
+#model.summary()
+
+for layer in baseModel.layers:
+	layer.trainable = False
+
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer=Adam(lr=0.001),
+              metrics=["accuracy"])
+
+            
+history = model.fit(trainX, trainY, epochs=20, batch_size=20, validation_data=(testX, testY))
