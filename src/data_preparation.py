@@ -17,7 +17,10 @@ def get_data(number_of_images_for_each_class):
 	print("[LOADING IMAGES]")
 	for folder in folders:
 		files = os.listdir(path + "/" + folder)
-		for f in files[0:100]:
+		l = n
+		if n > len(files):
+			l = len(files)
+		for f in files[0:l]:
 			imagePath = path + "/" + folder + "/" + f
 			image = load_img(imagePath, target_size=input_dim)
 			image = img_to_array(image)

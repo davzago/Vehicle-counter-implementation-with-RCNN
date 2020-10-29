@@ -61,3 +61,7 @@ this problem makes so this method is not usable in high traffic areas where we c
 ## possible dataset
 
 http://podoce.dinf.usherbrooke.ca/challenge/dataset/
+
+## Memory Leak
+
+https://github.com/keras-team/keras/issues/13118

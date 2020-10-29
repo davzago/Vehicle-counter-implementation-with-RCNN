@@ -39,9 +39,9 @@ class Tracker():
         # otherwise we calculate the center of every bounding box
         centers = np.zeros((len(bounding_boxes), 2), dtype="int")
 
-        for i,((x1,y1),(x2,y2)) in enumerate(bounding_boxes):
-            cx = int((x1+x2)/2)
-            cy = int((y1+y2)/2)
+        for i, (x, y, w, h) in enumerate(bounding_boxes):
+            cx = int(x+w/2)
+            cy = int(y+h/2)
             centers[i] = (cx, cy)
 
         # if there are no objects registered we just need to register the new centers
