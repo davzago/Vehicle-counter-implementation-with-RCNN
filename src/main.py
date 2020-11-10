@@ -3,6 +3,7 @@ from Tracker import Tracker
 import cv2
 import time
 from tensorflow import keras
+import tensorflow.keras.backend as K
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.applications.resnet50 import preprocess_input
@@ -62,7 +63,7 @@ for i in range(419,423):
     data = np.array(crop2)
     del crop2
     labels = model.predict(data)
-    keras.clear_session()
+    K.clear_session()
     del data
     del crop
     for k in range(0,len(labels)):
