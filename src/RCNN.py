@@ -8,6 +8,11 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.applications.resnet50 import preprocess_input
 import os
 
+def delete_temp_items(temp_path):
+    files = os.listdir(temp_path)
+    for f in files:
+        remove(temp_path + f) 
+
 def nms(rectangles, overlap_threshold):
     x1 = rectangles[:,0]
     y1 = rectangles[:,1]
@@ -44,16 +49,17 @@ def nms(rectangles, overlap_threshold):
     return rectangles[pick].astype("int")
 
 
-def detect():
+def detect(input_path, temp_path):
     s_search = cv2.ximgproc.segmentation.createSelectiveSearchSegmentation()
 
     s_search_path = "data/SSearch"
     times = []
     crops = []
     vheicles = []
-    for i in range(419,423):
+    n_frames = len(os.listdir(input_path))
+    for i in range(419,423): #range(0,n_frames)
         model = keras.models.load_model('models/model1k.h5')
-        img = cv2.imread("data/frames/%d.jpg" %i)
+        img = cv2.imread(input_path + "/%d.jpg" %i)
         max_height, max_width, _ = img.shape
         s_search.setBaseImage(img)
         s_search.switchToSelectiveSearchFast()
@@ -70,12 +76,12 @@ def detect():
             center = (int(x+w/2), int(y+h/2))
             c = cv2.getRectSubPix(img, (w, h), center)
             #crop.append(c)
-            cv2.imwrite("data/crops/%d.jpg" %count, c)
+            cv2.imwrite(temp_path + "/%d.jpg" %count, c)
             count += 1
             crop2 = []
         for j in range(0, count):
-            temp_img = load_img("data/crops/%d.jpg" %j, target_size=(224, 224))
-            os.remove("data/crops/%d.jpg" %j)
+            temp_img = load_img(temp_path + "/%d.jpg" %j, target_size=(224, 224))
+            os.remove(temp_path + "/%d.jpg" %j)
             temp_img = img_to_array(temp_img) 
             crop2.append(preprocess_input(temp_img))
         data = np.array(crop2)
@@ -87,7 +93,7 @@ def detect():
         #l = []
         for k in range(0,len(labels)):
             if labels[k].argmax()==3:
-                #cv2.imwrite("data/crops" + '/%d.jpg' % k, crop[k])
+                #cv2.imwrite(temp_path + "" + '/%d.jpg' % k, crop[k])
                 x, y, w, h = rectangles[k]
                 idx = labels[k].argmax()
                 rect = (x, y, x+w, y+h, idx, labels[k, idx])
