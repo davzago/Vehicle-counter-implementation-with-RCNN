@@ -54,9 +54,6 @@ if args.output:
         os.mkdir(output_path)
 
 
-
-
-
 #detector = Detector("data/frames") input_path
 tracker = Tracker()
 #detector.detect("data/diff") temp_path
@@ -90,6 +87,9 @@ for i in range(0,len(vheicles)):
         cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
         
     cv2.imwrite(result_path + '/%d.jpg' % i, img)
+
+
+print("the number of vheicles in this video is:", tracker.vheicle_count)
     
 
     
