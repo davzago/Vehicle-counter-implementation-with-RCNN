@@ -9,6 +9,8 @@ import time
 import numpy as np
 import os
 
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2" 
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--video", help="path of the input video")
 parser.add_argument("--input", help="path of the folder where the frames of the video will be stored or are already stored")

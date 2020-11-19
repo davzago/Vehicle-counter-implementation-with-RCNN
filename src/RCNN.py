@@ -57,7 +57,7 @@ def detect(input_path, temp_path):
     crops = []
     vheicles = []
     n_frames = len(os.listdir(input_path))
-    for i in range(419,421): #range(0,n_frames)
+    for i in range(419,429): #range(0,n_frames)
         model = keras.models.load_model('models/model1k.h5')
         img = cv2.imread(input_path + "/%d.jpg" %i)
         max_height, max_width, _ = img.shape

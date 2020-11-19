@@ -3,7 +3,7 @@ from collections import OrderedDict
 import numpy as np
 
 class Tracker():
-    def __init__(self, max_dis_frames=20, min_travel_distance=50):
+    def __init__(self, max_dis_frames=20, min_travel_distance=60):
         # initialize the id that will be given to objects (the first id is 0)
         self.objectID = 0
         # initializing the dictionary wich will contain the centers of the rectangles in the present frame
@@ -11,7 +11,7 @@ class Tracker():
         # dictionary containing all the objects that disappears for a number of frames <= max_dis_frames
         self.dis_objects = OrderedDict()
         self.max_dis_frames = max_dis_frames
-        self.travel_distance = OrderedDict()
+        self.initial_position = OrderedDict()
         self.min_travel_distance = min_travel_distance
         self.vheicle_count = 0
 
@@ -19,13 +19,15 @@ class Tracker():
     def register_object(self, center):
         self.objects[self.objectID] = center
         self.dis_objects[self.objectID] = 0
-        self.travel_distance[self.objectID] = 0
+        self.initial_position[self.objectID] = center
         self.objectID += 1
     
     # method uset to unregister an object absent from the video for more than max_dis_frames
     def unregister(self, objectID):
         del self.objects[objectID]
         del self.dis_objects[objectID]
+        if objectId in self.initial_position:
+            del self.initial_position[objectID]
     
     # core method that will be called for each frame of the video and is used to
     # keep track of the objects
@@ -76,13 +78,15 @@ class Tracker():
                 objectID = objectIDs[row]
                 self.objects[objectID] = centers[col]
                 self.dis_objects[objectID] = 0
-                self.travel_distance[objectID] += distance[row, col]
                 used_rows.add(row)
                 used_cols.add(col)
             # we update the vheicle count after updating the distances traveled by the register objects
-            distance_list = list(self.travel_distance.values())
-            self.vheicle_count = len([x for x in distance_list if x>=self.min_travel_distance])
-            
+            for key in objectIDs:
+                if key in self.initial_position:
+                   d = dist.euclidean(self.initial_position[key], self.objects[key])
+                   if d > self.min_travel_distance:
+                       self.vheicle_count += 1 
+                       del self.initial_position[key]         
             # the unused rows are disappeared object so we update dis_object with the id corresponding to the row
             # the unused cols are new objects that need to be registered       
             unused_rows = set(range(0,distance.shape[0])).difference(used_rows)
