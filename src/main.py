@@ -9,7 +9,12 @@ import time
 import numpy as np
 import os
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2" 
+#array of colors corresponding to each class of vehicle
+# verde - 
+colors = [(0,255,0), (0,255,255), (0,0,255), (255,0,255), (0,102,205), (0,255,255), (0,128,255), (255,0,127)]  
+
+#array that maps each label to the correct category
+categories = ["A truck", "Background", "Bus", "Car", "Motorcycle", "Pickup", "SU truck", "Van"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--video", help="path of the input video")
@@ -75,17 +80,20 @@ tracker = Tracker()
     cv2.imwrite(result_path + '/%d.jpg' % i, img)"""
 
 
-vheicles = detect(input_path, temp_path)
-
+vheicles, labels, probs = detect(input_path, temp_path)
 for i in range(0,len(vheicles)):
     centers = tracker.update(vheicles[i])
     img = cv2.imread(input_path + "/%d.jpg" %(419+i))
     for j in range(0,len(vheicles[i])):
-        cv2.rectangle(img, (vheicles[i][j][0], vheicles[i][j][1]), (vheicles[i][j][0]+vheicles[i][j][2],vheicles[i][j][1]+vheicles[i][j][3]), (0, 255, 0), 1)
+        color = colors[labels[i][j]]
+        cat = categories[labels[i][j]]
+        cv2.rectangle(img, (vheicles[i][j][0], vheicles[i][j][1]), (vheicles[i][j][0]+vheicles[i][j][2],vheicles[i][j][1]+vheicles[i][j][3]), color, 1)
+        cv2.putText(img, cat, (vheicles[i][j][0], vheicles[i][j][1]-5),
+                        cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, color, 1)
     for c_id, c in centers.items():
         text = "ID{}".format(c_id)
         cv2.putText(img, text, (c[0] - 10, c[1] - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+                        cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, (0, 255, 0), 1)
         cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
         
     cv2.imwrite(result_path + '/%d.jpg' % i, img)

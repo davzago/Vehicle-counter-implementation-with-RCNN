@@ -8,6 +8,7 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.applications.resnet50 import preprocess_input
 import os
 
+
 def delete_temp_items(temp_path):
     files = os.listdir(temp_path)
     for f in files:
@@ -39,14 +40,14 @@ def nms(rectangles, overlap_threshold):
         w = np.maximum(0, xx2 - xx1 + 1)
         h = np.maximum(0, yy2 - yy1 + 1)
 
-        overlap = (w * h) / area[indexes[:last]]
+        overlap = (w * h) / area[indexes[:last]] #area[i]
 
         indexes = np.delete(indexes, np.concatenate(([last], np.where(overlap > overlap_threshold)[0])))
 
     for k in pick:
         rectangles[k,2] = rectangles[k,2] - rectangles[k,0]
-        rectangles[k,3] = rectangles[k,3] - rectangles[k,1]    
-    return rectangles[pick].astype("int")
+        rectangles[k,3] = rectangles[k,3] - rectangles[k,1] 
+    return rectangles[pick,:4].astype("int"), rectangles[pick,4].astype("int"), rectangles[pick,5]
 
 
 def detect(input_path, temp_path):
@@ -56,8 +57,10 @@ def detect(input_path, temp_path):
     times = []
     crops = []
     vheicles = []
+    probs = []
+    final_labels = []
     n_frames = len(os.listdir(input_path))
-    for i in range(419,429): #range(0,n_frames)
+    for i in range(419,425): #range(0,n_frames)
         model = keras.models.load_model('models/model1k.h5')
         img = cv2.imread(input_path + "/%d.jpg" %i)
         max_height, max_width, _ = img.shape
@@ -92,7 +95,7 @@ def detect(input_path, temp_path):
         del crop
         #l = []
         for k in range(0,len(labels)):
-            if labels[k].argmax()==3:
+            if labels[k].argmax()!=1:
                 #cv2.imwrite(temp_path + "" + '/%d.jpg' % k, crop[k])
                 x, y, w, h = rectangles[k]
                 idx = labels[k].argmax()
@@ -100,12 +103,14 @@ def detect(input_path, temp_path):
                 v.append(rect)
                 #l.append(labels[k])
         rect_and_labels = np.array(v)
-        nms_boxes = nms(rect_and_labels, 0.3)        
-        vheicles.append(nms_boxes[:,:4])
+        nms_boxes, label, prob = nms(rect_and_labels, 0.01)  
+        probs.append(prob)
+        final_labels.append(label)
+        vheicles.append(nms_boxes)
         #rec.append(rectangles)
         #for (x, y, h, w) in rectangles:
         #cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 1)
         #cv2.imwrite(s_search_path +'/%d.jpg' % i, img)
-    return vheicles
+    return vheicles, final_labels, probs
 
 

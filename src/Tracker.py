@@ -44,6 +44,7 @@ class Tracker():
 
         # otherwise we calculate the center of every bounding box
         centers = np.zeros((len(bounding_boxes), 2), dtype="int")
+        #print(len(bounding_boxes))
 
         for i, (x, y, w, h) in enumerate(bounding_boxes):
             cx = int(x+w/2)
@@ -69,6 +70,7 @@ class Tracker():
             used_rows = set()
             used_cols = set()
             # for each zipped col and rows
+            #ci sono più righe che colonne quindi lo zip cosa fa?
             for row, col in zip(rows, cols):
                 # we check if we already used the row or the col, if so we skip this cycle 
                 if row in used_rows or col in used_cols:
