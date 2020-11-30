@@ -3,6 +3,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.applications.resnet50 import preprocess_input
 import numpy as np
+import pandas as pd
 
 def get_data(number_of_images_for_each_class):
 	path = "data/vehicle data/train"
@@ -29,3 +30,15 @@ def get_data(number_of_images_for_each_class):
 			labels.append(folder)
 	labels = np.unique(labels, return_inverse=True)[1]
 	return np.array(data), np.array(labels)
+
+# returns a 2-D array where on each row the first entry corresponds to the imageID
+def get_bbox(file_path):
+	data = pd.read_csv(file_path, sep=',', usecols=['ImageID', 'XMin', 'XMax', 'YMin', 'YMax'])
+	rectangles = []
+	for index, row in data.iterrows():
+		box = [row['ImageID'], row['XMin'], row['YMin'], row['XMax'], row['YMax']]
+		rectangles.append(box)
+	return np.array(rectangles)
+
+get_bbox("/home/davide/Scaricati/oidv6-train-annotations-bbox.csv")
+	

@@ -69,3 +69,7 @@ https://github.com/keras-team/keras/issues/13118
 ## About the RCNN
 
 Using resnet we obtain a classification in about a minute per image, this is slow hence we want to try a lighter net in order to obtain a faster detection, also we want to try an enseble method since we don't have enough memory resurces to train a good enough network in one go, so we split the training set in groups to give to train more models to build an ensamble
+
+## Toolkit bbox
+
+https://github.com/EscVM/OIDv4_ToolKit
