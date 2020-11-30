@@ -10,3 +10,5 @@ cvblob/
 data/
 
 src/__pycache__/
+
+src/blobDetector.py
