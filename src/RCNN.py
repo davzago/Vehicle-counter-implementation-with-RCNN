@@ -61,7 +61,9 @@ def detect(input_path, temp_path):
     final_labels = []
     n_frames = len(os.listdir(input_path))
     for i in range(419,425): #range(0,n_frames)
-        model = keras.models.load_model('models/model1k.h5')
+        model1 = keras.models.load_model('models/model1k.h5')
+        #model2 = keras.models.load_model('models/resnet2.h5')
+        #model3 = keras.models.load_model('models/resnet3.h5')
         img = cv2.imread(input_path + "/%d.jpg" %i)
         max_height, max_width, _ = img.shape
         s_search.setBaseImage(img)
@@ -89,17 +91,27 @@ def detect(input_path, temp_path):
             crop2.append(preprocess_input(temp_img))
         data = np.array(crop2)
         del crop2
-        labels = model.predict(data)
+        labels1 = model1.predict(data)
+        labels2 = labels1#model2.predict(data)
+        labels3 = labels1#model3.predict(data)
         K.clear_session()
         del data
         del crop
         #l = []
-        for k in range(0,len(labels)):
-            if labels[k].argmax()!=1:
+        for k in range(0,len(labels1)):
+            label = None
+            match = False
+            if labels1[k].argmax() == labels2[k].argmax() or labels1[k].argmax() == labels2[k].argmax():
+                label = labels1[k]
+                match = True
+            elif labels2[k].argmax() == labels3[k].argmax():
+                label = labels2[k]
+                match = True
+            if match and label.argmax()!=1 and label[label.argmax()]>0.4:
                 #cv2.imwrite(temp_path + "" + '/%d.jpg' % k, crop[k])
                 x, y, w, h = rectangles[k]
-                idx = labels[k].argmax()
-                rect = (x, y, x+w, y+h, idx, labels[k, idx])
+                idx = label.argmax()
+                rect = (x, y, x+w, y+h, idx, label[idx])
                 v.append(rect)
                 #l.append(labels[k])
         rect_and_labels = np.array(v)
