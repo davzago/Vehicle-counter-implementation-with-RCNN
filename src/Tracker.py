@@ -3,7 +3,7 @@ from collections import OrderedDict
 import numpy as np
 
 class Tracker():
-    def __init__(self, max_dis_frames=20, min_travel_distance=60):
+    def __init__(self, max_dis_frames=20, min_travel_distance=40):
         # initialize the id that will be given to objects (the first id is 0)
         self.objectID = 0
         # initializing the dictionary wich will contain the centers of the rectangles in the present frame
