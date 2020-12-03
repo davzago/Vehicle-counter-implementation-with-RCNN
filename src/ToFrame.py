@@ -10,3 +10,5 @@ def video_to_frame(path_to_video, path_to_frame_folder):
         success,image = vidcap.read()
         print('Read a new frame: ', success)
         count += 1
+
+#video_to_frame("data/video3.MOV", "data/frames")

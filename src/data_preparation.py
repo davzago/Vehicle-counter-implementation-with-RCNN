@@ -5,6 +5,8 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.applications.resnet50 import preprocess_input
 import numpy as np
 import pandas as pd
+import json
+from pandas import json_normalize
 
 def get_data(number_of_images_for_each_class):
 	path = "data/vehicle data/train"
@@ -41,6 +43,21 @@ def get_bbox(file_path):
 		rectangles.append(box)
 	return np.array(rectangles)
 
+def get_bbox_json(file_path):
+	"""data = pd.read_json(file_path, lines=True)#file_path, sep=',', usecols=['ImageID', 'XMin', 'XMax', 'YMin', 'YMax'])
+	print(data)"""
+	with open(file_path) as f: 
+		d = json.load(f)
+	
+	df = json_normalize(d[1]["objects"])
+	
+	print(df.head(3))
+	"""rectangles = []
+	for index, row in data.iterrows():
+		box = [row['ImageID'], row['XMin'], row['YMin'], row['XMax'], row['YMax']]
+		rectangles.append(box)
+	return np.array(rectangles)"""
+
 def compute_iou(box1, box2):
 	x1 = max(box1[0], box2[0])
 	y1 = max(box1[1], box2[1])
@@ -54,7 +71,7 @@ def compute_iou(box1, box2):
 
 	return intersection / (area1 + area2 - intersection)
 
-def update_dataset(img_path, dataset_path, bbox_path, max_pos, max_neg, total_pos, total_neg):
+"""def update_dataset(img_path, dataset_path, bbox_path, max_pos, max_neg, total_pos, total_neg):
 	ground_truth = # take csv and read
 	s_search = cv2.ximgproc.segmentation.createSelectiveSearchSegmentation()
 	img = cv2.imread(img_path)
@@ -94,4 +111,6 @@ def update_dataset(img_path, dataset_path, bbox_path, max_pos, max_neg, total_po
 				total_neg+=1
 				count_neg+=1
 	
-	return total_pos, total_neg
+	return total_pos, total_neg"""
+
+get_bbox_json("LABELSEXAMPLE.json")
