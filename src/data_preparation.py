@@ -105,7 +105,7 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 				h = sel_box[3] - sel_box[1]
 				center = (int(sel_box[0]+w / 2), int(sel_box[1]+h / 2))
 				c = cv2.getRectSubPix(img, (w, h), center)
-				c = cv2.resize(c, (224,224), interpolation=cv2.INTER_CUBIC)
+				c = cv2.resize(c, (224,224), interpolation=cv2.INTER_CUBIC) #resize to have all images the same size
 				cv2.imwrite(dataset_path + '/positive/' + str(total_pos) + '.jpg', c)
 				total_pos+=1
 				count_pos+=1
@@ -129,8 +129,9 @@ gt = get_bbox_json("LABELSEXAMPLE.json")
 p = 0
 n = 0
 for frame in range(0,99):
+	print(frame)
 	# 1. estrarre gt per il frame in esame
 	img_gt = list(filter(lambda x: x[0]==frame, gt))
 	# 2. update dataset
-	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 30, p, n)
+	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 20, 15, p, n)
 	

@@ -5001,4 +5001,341 @@
             "classifications": []
         }
     ]
-}]
+},
+{
+    "frameNumber": 161,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "ckiegirn1000c32679jevnl5o",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 394,
+                "left": 726,
+                "height": 47,
+                "width": 53
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegiyux000d3267d02a57uq",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 411,
+                "left": 1101,
+                "height": 58,
+                "width": 66
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegj5v2000e326709c7dmcv",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 285,
+                "left": 823,
+                "height": 17,
+                "width": 19
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegjbq1000f3267o9wf0h4o",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 279,
+                "left": 854,
+                "height": 17,
+                "width": 18
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegjhfk000g3267ia01qri1",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 283,
+                "left": 940,
+                "height": 18,
+                "width": 22
+            },
+            "classifications": []
+        }
+    ]
+},
+{
+    "frameNumber": 487,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "cki92uyi700003267xxszifls",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 649,
+                "left": 1289,
+                "height": 128,
+                "width": 170
+            },
+            "classifications": []
+        }
+    ]
+},
+{
+    "frameNumber": 503,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "cki92wg4800013267aqxmbog2",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 710,
+                "left": 1102,
+                "height": 153,
+                "width": 177
+            },
+            "classifications": []
+        }
+    ]
+},
+{
+    "frameNumber": 542,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "ckiege2k200003267aeem4kho",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 537,
+                "left": 1181,
+                "height": 73,
+                "width": 96
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegebtd00013267mcg18wj7",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 416,
+                "left": 986,
+                "height": 52,
+                "width": 57
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegekgj00023267c48gavs3",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 402,
+                "left": 1064,
+                "height": 39,
+                "width": 52
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckieges6c00033267bupt18cm",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 347,
+                "left": 782,
+                "height": 28,
+                "width": 33
+            },
+            "classifications": []
+        }
+    ]
+},
+{
+    "frameNumber": 587,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "cki92x1j900023267zg8t3mz8",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 463,
+                "left": 629,
+                "height": 63,
+                "width": 75
+            },
+            "classifications": []
+        }
+    ]
+},
+{
+    "frameNumber": 658,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "cki92y7qq00033267pmysqzuw",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 437,
+                "left": 676,
+                "height": 54,
+                "width": 60
+            },
+            "classifications": []
+        }
+    ]
+},
+{
+    "frameNumber": 709,
+    "classifications": [],
+    "objects": [
+        {
+            "featureId": "ckiegg4vy00043267qptee7o3",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 516,
+                "left": 1108,
+                "height": 72,
+                "width": 82
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckieggjlf00053267xl8yyd77",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 429,
+                "left": 932,
+                "height": 51,
+                "width": 56
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckieggucj00063267p1ajtbbb",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 413,
+                "left": 1004,
+                "height": 47,
+                "width": 50
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegh06b00073267omokpcq8",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 360,
+                "left": 918,
+                "height": 31,
+                "width": 35
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckiegh4cn0008326798dux8c0",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 348,
+                "left": 968,
+                "height": 23,
+                "width": 28
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckieghai300093267nb4b91ts",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 318,
+                "left": 986,
+                "height": 18,
+                "width": 21
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckieghn2j000a32678yriq7sy",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 397,
+                "left": 805,
+                "height": 39,
+                "width": 43
+            },
+            "classifications": []
+        },
+        {
+            "featureId": "ckieght31000b3267reoiklvg",
+            "schemaId": "cki623gcv0xz70y7x9glig4bv",
+            "title": "Car",
+            "value": "car",
+            "color": "#1CE6FF",
+            "bbox": {
+                "top": 374,
+                "left": 714,
+                "height": 31,
+                "width": 39
+            },
+            "classifications": []
+        }
+    ]
+}
+]
