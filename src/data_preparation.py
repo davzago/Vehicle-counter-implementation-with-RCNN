@@ -82,6 +82,9 @@ def compute_iou(box1, box2):
 	return intersection / (area1 + area2 - intersection)
 
 def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total_pos, total_neg):
+	if len(gt) == 0:
+		return total_pos, total_neg
+	
 	s_search = cv2.ximgproc.segmentation.createSelectiveSearchSegmentation()
 	img = cv2.imread(img_path)
 	s_search.setBaseImage(img)
@@ -128,10 +131,10 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 gt = get_bbox_json("LABELSEXAMPLE.json")
 p = 0
 n = 0
-for frame in range(0,99):
-	print(frame)
+for frame in range(0,753):
+	print("Analyzing frame number "+ str(frame))
 	# 1. estrarre gt per il frame in esame
 	img_gt = list(filter(lambda x: x[0]==frame, gt))
 	# 2. update dataset
-	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 20, 15, p, n)
+	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 15, p, n)
 	

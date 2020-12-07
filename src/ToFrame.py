@@ -7,7 +7,7 @@ def video_to_frame(path_to_video, path_to_frame_folder):
     count = 0
     while success:
         cv2.imwrite(path_to_frame_folder + "/%d.jpg" % count, image)    
-        success,image = vidcap.read()
+        success, image = vidcap.read()
         print('Read a new frame: ', success)
         count += 1
 
