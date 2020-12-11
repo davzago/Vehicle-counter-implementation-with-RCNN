@@ -6,6 +6,7 @@ import tensorflow.keras.backend as K
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.applications.resnet50 import preprocess_input
+#from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import os
 
 
@@ -15,6 +16,8 @@ def delete_temp_items(temp_path):
         remove(temp_path + f) 
 
 def nms(rectangles, overlap_threshold):
+    if len(rectangles)==0:
+        return rectangles, -1, -1
     x1 = rectangles[:,0]
     y1 = rectangles[:,1]
     x2 = rectangles[:,2]
@@ -60,9 +63,12 @@ def detect(input_path, temp_path):
     probs = []
     final_labels = []
     n_frames = len(os.listdir(input_path))
-    for i in range(419,425): #range(0,n_frames)
-        model = keras.models.load_model('models/softmax_binary_resnet.h5')
-        img = cv2.imread(input_path + "/%d.jpg" %i)
+    for i in range(60,66): #range(0,n_frames)
+        model = keras.models.load_model('models/new_even_resnet.h5')
+        img_original = cv2.imread(input_path + "/%d.jpg" %i)
+        maxX = len(img_original[0])
+        maxY = len(img_original)
+        img = cv2.resize(img_original, (600,360), interpolation=cv2.INTER_CUBIC)
         max_height, max_width, _ = img.shape
         s_search.setBaseImage(img)
         s_search.switchToSelectiveSearchFast()
@@ -94,11 +100,11 @@ def detect(input_path, temp_path):
         del data
         del crop
         for k in range(0,len(labels)):
-            if labels[k].argmax() == 1 and labels[k,1] > 0.7:
+            if labels[k].argmax() == 1: #and labels[k,1] > 0.7:
                 #cv2.imwrite(temp_path + "" + '/%d.jpg' % k, crop[k])
                 x, y, w, h = rectangles[k]
                 idx = labels[k].argmax()
-                rect = (x, y, x+w, y+h, idx, labels[k].argmax())
+                rect = (int(maxX*x/600), int(maxY*y/360), int(maxX*(x+w)/600), int(maxY*(y+h)/360), idx, labels[k].argmax())
                 v.append(rect)
         rect_and_labels = np.array(v)
         nms_boxes, label, prob = nms(rect_and_labels, 0.01)  

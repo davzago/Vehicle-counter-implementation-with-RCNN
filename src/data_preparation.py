@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import json
 from pandas import json_normalize
+import time
 
 def get_data(number_of_images_for_each_class):
 	path = "data/vehicle data/train"
@@ -82,7 +83,7 @@ def compute_iou(box1, box2):
 	return intersection / (area1 + area2 - intersection)
 
 def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total_pos, total_neg):
-	if len(gt) == 0:
+	if len(ground_truth) == 0:
 		return total_pos, total_neg
 	
 	s_search = cv2.ximgproc.segmentation.createSelectiveSearchSegmentation()
@@ -128,7 +129,7 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 	
 	return total_pos, total_neg
 
-gt = get_bbox_json("LABELSEXAMPLE.json")
+gt = get_bbox_json("Labels.json")
 p = 0
 n = 0
 for frame in range(0,753):
@@ -136,5 +137,5 @@ for frame in range(0,753):
 	# 1. estrarre gt per il frame in esame
 	img_gt = list(filter(lambda x: x[0]==frame, gt))
 	# 2. update dataset
-	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 15, p, n)
+	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 12, p, n)
 	

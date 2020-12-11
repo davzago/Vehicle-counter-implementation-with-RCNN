@@ -73,3 +73,7 @@ Using resnet we obtain a classification in about a minute per image, this is slo
 ## Toolkit bbox
 
 https://github.com/EscVM/OIDv4_ToolKit
+
+## SVM to bounding box
+
+https://papers.nips.cc/paper/2014/file/6c4b761a28b734fe93831e3fb400ce87-Paper.pdf

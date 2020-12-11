@@ -83,7 +83,7 @@ tracker = Tracker()
 vheicles, labels, probs = detect(input_path, temp_path)
 for i in range(0,len(vheicles)):
     centers = tracker.update(vheicles[i])
-    img = cv2.imread(input_path + "/%d.jpg" %(1000+i))
+    img = cv2.imread(input_path + "/%d.jpg" %(60+i))
     for j in range(0,len(vheicles[i])):
         color = colors[labels[i][j]]
         cat = categories[labels[i][j]]
