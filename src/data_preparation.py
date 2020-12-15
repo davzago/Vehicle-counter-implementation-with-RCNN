@@ -44,6 +44,8 @@ def get_bbox(file_path):
 		rectangles.append(box)
 	return np.array(rectangles)
 
+
+
 def get_bbox_json(file_path):
 	with open(file_path) as f: 
 		d = json.load(f)
@@ -57,9 +59,7 @@ def get_bbox_json(file_path):
 		for _, o in obj_df.iterrows():
 			box = [frame_number, int(o["bbox.left"]), int(o["bbox.top"]), int(o["bbox.width"]+o["bbox.left"]), int(o["bbox.height"]+o["bbox.top"])]
 			rectangles.append(box)
-	return rectangles
-			
-			
+	return rectangles		
 		
 	
 	print(df.head(3))
@@ -129,7 +129,31 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 	
 	return total_pos, total_neg
 
-gt = get_bbox_json("Labels.json")
+
+
+def get_bbox_from_txt(labels_path):
+	files = os.listdir(labels_path)
+	boxes = []
+	for fi in files:
+		with open(labels_path + "/" + fi) as f:
+			for line in f:
+				split = line.split()
+				ID = fi.split('.')[0]
+				x = int(float(split[1]))
+				y = int(float(split[2]))
+				x1 = int(float(split[3]))
+				y1 = int(float(split[4]))
+				boxes.append([ID, x , y, x1, y1])
+	return boxes
+	
+	"""for f in files:
+		fr = open(labels_path + "/" + f)
+		line = fr.readline()
+		while 
+		fr.close()"""
+
+
+"""gt = get_bbox_json("Labels.json")
 p = 0
 n = 0
 for frame in range(0,753):
@@ -137,5 +161,17 @@ for frame in range(0,753):
 	# 1. estrarre gt per il frame in esame
 	img_gt = list(filter(lambda x: x[0]==frame, gt))
 	# 2. update dataset
-	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 12, p, n)
+	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 12, p, n)"""
 	
+gt = get_bbox_from_txt("Car/Label")
+p = 0
+n = 0
+imgs = os.listdir("Car")
+for img in imgs:
+	split = img.split('.')
+	if split[0] != "Label": 
+		print("Analyzing image " + split[0])
+		# 1. estrarre gt per il frame in esame
+		img_gt = list(filter(lambda x: x[0]==split[0], gt))
+		# 2. update dataset
+		p, n = update_dataset("Car/"+str(split[0])+".jpg", img_gt, "dataset", 30, 12, p, n)

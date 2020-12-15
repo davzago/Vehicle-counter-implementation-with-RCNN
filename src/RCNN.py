@@ -63,8 +63,8 @@ def detect(input_path, temp_path):
     probs = []
     final_labels = []
     n_frames = len(os.listdir(input_path))
-    for i in range(60,66): #range(0,n_frames)
-        model = keras.models.load_model('models/new_even_resnet.h5')
+    for i in range(70,100): #range(0,n_frames)
+        model = keras.models.load_model('models/OID_resnet.h5')
         img_original = cv2.imread(input_path + "/%d.jpg" %i)
         maxX = len(img_original[0])
         maxY = len(img_original)
