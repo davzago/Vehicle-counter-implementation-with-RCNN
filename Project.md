@@ -77,3 +77,10 @@ https://github.com/EscVM/OIDv4_ToolKit
 ## SVM to bounding box
 
 https://papers.nips.cc/paper/2014/file/6c4b761a28b734fe93831e3fb400ce87-Paper.pdf
+
+## Building a Dataset
+
+The dataset was built using Selective sarch.....
+
+the problem we had was that the bounding boxes sometimes were too big and sometimes contained two or more vehicles, to resolve it we added some images containing vheicles but with a bbox which was too big to the negatives, this pushed the network to avoid big boxes and only approve the images where a vehicle takes up most of the image.
+The bounding boxes after this change still isn't perfect and changes its size between frames, but we think that in order to obtain a more precise box we should use a regression network.

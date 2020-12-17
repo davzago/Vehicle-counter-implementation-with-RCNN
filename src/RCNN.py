@@ -73,7 +73,7 @@ def detect(input_path, temp_path):
     probs = []
     final_labels = []
     n_frames = len(os.listdir(input_path))
-    for i in range(80,86): #range(0,n_frames)
+    for i in range(400,500): #range(0,n_frames)
         model = keras.models.load_model('models/bigger_negative_resnet.h5')
         img_original = cv2.imread(input_path + "/%d.jpg" %i)
         maxX = len(img_original[0])
@@ -85,7 +85,7 @@ def detect(input_path, temp_path):
         #s_search.switchToSelectiveSearchQuality()
         print("starting selective search on image %d" %i)
         rectangles = s_search.process()
-            crop = []
+        crop = []
         count = 0
         v = []
         for (x, y , w, h) in rectangles:
