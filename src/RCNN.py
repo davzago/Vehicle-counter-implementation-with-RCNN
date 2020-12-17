@@ -15,6 +15,16 @@ def delete_temp_items(temp_path):
     for f in files:
         remove(temp_path + f) 
 
+def get_boxes(rectangles):
+    if len(rectangles)==0:
+        return rectangles, -1, -1
+
+    for k in range(0,len(rectangles)):
+        rectangles[k,2] = rectangles[k,2] - rectangles[k,0]
+        rectangles[k,3] = rectangles[k,3] - rectangles[k,1]
+    return rectangles[:,:4].astype("int"), rectangles[:,4].astype("int"), rectangles[:,5]
+
+
 def nms(rectangles, overlap_threshold):
     if len(rectangles)==0:
         return rectangles, -1, -1
@@ -63,8 +73,8 @@ def detect(input_path, temp_path):
     probs = []
     final_labels = []
     n_frames = len(os.listdir(input_path))
-    for i in range(70,100): #range(0,n_frames)
-        model = keras.models.load_model('models/OID_resnet.h5')
+    for i in range(80,86): #range(0,n_frames)
+        model = keras.models.load_model('models/bigger_negative_resnet.h5')
         img_original = cv2.imread(input_path + "/%d.jpg" %i)
         maxX = len(img_original[0])
         maxY = len(img_original)
@@ -74,11 +84,8 @@ def detect(input_path, temp_path):
         s_search.switchToSelectiveSearchFast()
         #s_search.switchToSelectiveSearchQuality()
         print("starting selective search on image %d" %i)
-        start = time.time()
         rectangles = s_search.process()
-        end = time.time()
-        times.append(end-start)
-        crop = []
+            crop = []
         count = 0
         v = []
         for (x, y , w, h) in rectangles:
@@ -86,6 +93,7 @@ def detect(input_path, temp_path):
             c = cv2.getRectSubPix(img, (w, h), center)
             #crop.append(c)
             cv2.imwrite(temp_path + "/%d.jpg" %count, c)
+            del c
             count += 1
             crop2 = []
         for j in range(0, count):
@@ -107,10 +115,11 @@ def detect(input_path, temp_path):
                 rect = (int(maxX*x/600), int(maxY*y/360), int(maxX*(x+w)/600), int(maxY*(y+h)/360), idx, labels[k].argmax())
                 v.append(rect)
         rect_and_labels = np.array(v)
-        nms_boxes, label, prob = nms(rect_and_labels, 0.01)  
-        probs.append(prob)
+        #boxes, label, prob = get_boxes(rect_and_labels)
+        boxes, label, prob = nms(rect_and_labels, 0.01)  
+        #probs.append(prob)
         final_labels.append(label)
-        vheicles.append(nms_boxes)
+        vheicles.append(boxes)
         #rec.append(rectangles)
         #for (x, y, h, w) in rectangles:
         #cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 1)

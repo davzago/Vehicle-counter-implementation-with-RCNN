@@ -100,6 +100,7 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 	del r
 	count_pos = 0
 	count_neg = 0
+	count_big = 0
 	for (_, x, y, x1, y1) in ground_truth:
 		truth_box = [x, y, x1, y1]
 		for sel_box in rectangles:
@@ -115,7 +116,10 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 				count_pos+=1
 			
 			fulloverlap = sel_box[0] >= truth_box[0] and sel_box[1] >= truth_box[1] and sel_box[2] <= truth_box[2] and \
-				sel_box[3] <= truth_box[3]
+							sel_box[3] <= truth_box[3]
+
+			bigger = sel_box[0] <= truth_box[0] and sel_box[1] <= truth_box[1] and sel_box[2] >= truth_box[2] and \
+							sel_box[3] >= truth_box[3] and iou < 0.5			
 			
 			if not fulloverlap and iou < 0.1 and count_neg < max_neg:
 				w = sel_box[2] - sel_box[0]
@@ -126,6 +130,16 @@ def update_dataset(img_path, ground_truth, dataset_path, max_pos, max_neg, total
 				cv2.imwrite(dataset_path + '/negative/' + str(total_neg) + '.jpg', c)
 				total_neg+=1
 				count_neg+=1
+
+			if bigger and count_big < max_neg:
+				w = sel_box[2] - sel_box[0]
+				h = sel_box[3] - sel_box[1]
+				center = (int(sel_box[0]+w / 2), int(sel_box[1]+h / 2))
+				c = cv2.getRectSubPix(img, (w, h), center)
+				c = cv2.resize(c, (224,224), interpolation=cv2.INTER_CUBIC)
+				cv2.imwrite(dataset_path + '/negative/' + str(total_neg) + '.jpg', c)
+				total_neg+=1
+				count_big+=1 
 	
 	return total_pos, total_neg
 
@@ -153,7 +167,7 @@ def get_bbox_from_txt(labels_path):
 		fr.close()"""
 
 
-"""gt = get_bbox_json("Labels.json")
+gt = get_bbox_json("Labels.json")
 p = 0
 n = 0
 for frame in range(0,753):
@@ -161,9 +175,10 @@ for frame in range(0,753):
 	# 1. estrarre gt per il frame in esame
 	img_gt = list(filter(lambda x: x[0]==frame, gt))
 	# 2. update dataset
-	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 30, 12, p, n)"""
+	p, n = update_dataset("data/frames/"+str(frame)+".jpg", img_gt, "dataset", 1000, 6, p, n)
+print("total positives:", p, "\n total negatives:", n)
 	
-gt = get_bbox_from_txt("Car/Label")
+"""gt = get_bbox_from_txt("Car/Label")
 p = 0
 n = 0
 imgs = os.listdir("Car")
@@ -174,4 +189,4 @@ for img in imgs:
 		# 1. estrarre gt per il frame in esame
 		img_gt = list(filter(lambda x: x[0]==split[0], gt))
 		# 2. update dataset
-		p, n = update_dataset("Car/"+str(split[0])+".jpg", img_gt, "dataset", 30, 12, p, n)
+		p, n = update_dataset("Car/"+str(split[0])+".jpg", img_gt, "dataset", 30, 12, p, n)"""

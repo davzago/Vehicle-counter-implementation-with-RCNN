@@ -83,7 +83,7 @@ tracker = Tracker()
 vheicles, labels, probs = detect(input_path, temp_path)
 for i in range(0,len(vheicles)):
     centers = tracker.update(vheicles[i])
-    img = cv2.imread(input_path + "/%d.jpg" %(70+i))
+    img = cv2.imread(input_path + "/%d.jpg" %(80+i))
     for j in range(0,len(vheicles[i])):
         color = colors[labels[i][j]]
         cat = categories[labels[i][j]]
@@ -96,7 +96,7 @@ for i in range(0,len(vheicles)):
                         cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, (0, 255, 0), 1)
         cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
         
-    cv2.imwrite(result_path + '/%d.jpg' %(i+70), img)
+    cv2.imwrite(result_path + '/%d.jpg' %(i+80), img)
 
 
 print("the number of vheicles in this video is:", tracker.vheicle_count)
