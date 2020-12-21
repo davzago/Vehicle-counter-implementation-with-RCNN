@@ -14,15 +14,17 @@ import os
 colors = [(0,255,0), (0,255,255), (0,0,255), (255,0,255), (0,102,205), (0,255,255), (0,128,255), (255,0,127)]  
 
 #array that maps each label to the correct category
-categories = ["A truck", "Background", "Bus", "Car", "Motorcycle", "Pickup", "SU truck", "Van"]
+#categories = ["A truck", "Background", "Bus", "Car", "Motorcycle", "Pickup", "SU truck", "Van"]
+categories = ["Backgroud", "Vehicle"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--video", help="path of the input video")
 parser.add_argument("--input", help="path of the folder where the frames of the video will be stored or are already stored")
 parser.add_argument("--output", help="path to the folder where the results will be put")
 parser.add_argument("--temp", help="path to the folder where temporary files will be stored")
-# Add arguments to choose detection type
-#parser.add_argument()
+parser.add_argument("--RCNN",
+                        help="type of detector to use, if this parameter is used the dtetection will be done with a RCNN, the defoult one uses frame difference",
+                        action="store_true")
 args = parser.parse_args()
 
 input_path = "data/frames"
@@ -59,44 +61,45 @@ if args.output:
     present = os.path.isdir(output_path)
     if not present:
         os.mkdir(output_path)
-
-
-#detector = Detector("data/frames") input_path
+    
 tracker = Tracker()
-#detector.detect("data/diff") temp_path
-# delete_temp_items(temp_path)
 
-"""for i in range(0,len(detector.rects)):
-    centers = tracker.update(detector.rects[i])
-    img = cv2.imread("data/frames/%d.jpg" %i)
-    for j in range(0,len(detector.rects[i])):
-        cv2.rectangle(img, detector.rects[i][j][0], detector.rects[i][j][1], (0, 255, 0), 1)
-    for c_id, c in centers.items():
-        text = "ID{}".format(c_id)
-        cv2.putText(img, text, (c[0] - 10, c[1] - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-        cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
+if not args.RCNN: 
+    detector = Detector(input_path) 
+    detector.detect(temp_path) 
+    delete_temp_items(temp_path)
+
+    for i in range(0,len(detector.rects)):
+        centers = tracker.update(detector.rects[i])
+        img = cv2.imread(input_path +"/%d.jpg" %i)
+        for j in range(0,len(detector.rects[i])):
+            cv2.rectangle(img, (detector.rects[i][j][0], detector.rects[i][j][1]), (detector.rects[i][j][0]+detector.rects[i][j][2],detector.rects[i][j][1]+detector.rects[i][j][3]), (0, 255, 0), 1)
+        for c_id, c in centers.items():
+            text = "ID{}".format(c_id)
+            cv2.putText(img, text, (c[0] - 10, c[1] - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+            cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
         
-    cv2.imwrite(result_path + '/%d.jpg' % i, img)"""
+        cv2.imwrite(result_path + '/%d.jpg' % i, img)
 
-
-vheicles, labels, probs = detect(input_path, temp_path)
-for i in range(0,len(vheicles)):
-    centers = tracker.update(vheicles[i])
-    img = cv2.imread(input_path + "/%d.jpg" %(419+i))
-    for j in range(0,len(vheicles[i])):
-        color = colors[labels[i][j]]
-        cat = categories[labels[i][j]]
-        cv2.rectangle(img, (vheicles[i][j][0], vheicles[i][j][1]), (vheicles[i][j][0]+vheicles[i][j][2],vheicles[i][j][1]+vheicles[i][j][3]), color, 1)
-        cv2.putText(img, cat, (vheicles[i][j][0], vheicles[i][j][1]-5),
-                        cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, color, 1)
-    for c_id, c in centers.items():
-        text = "ID{}".format(c_id)
-        cv2.putText(img, text, (c[0] - 10, c[1] - 10),
-                        cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, (0, 255, 0), 1)
-        cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
+if args.RCNN: 
+    vheicles, labels, probs = detect(input_path, temp_path)
+    for i in range(0,len(vheicles)):
+        centers = tracker.update(vheicles[i])
+        img = cv2.imread(input_path + "/%d.jpg" %i)
+        for j in range(0,len(vheicles[i])):
+            color = colors[labels[i][j]]
+            cat = categories[labels[i][j]]
+            cv2.rectangle(img, (vheicles[i][j][0], vheicles[i][j][1]), (vheicles[i][j][0]+vheicles[i][j][2],vheicles[i][j][1]+vheicles[i][j][3]), color, 1)
+            cv2.putText(img, cat, (vheicles[i][j][0], vheicles[i][j][1]-5),
+                            cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, color, 1)
+        for c_id, c in centers.items():
+            text = "ID{}".format(c_id)
+            cv2.putText(img, text, (c[0] - 10, c[1] - 10),
+                            cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, (0, 255, 0), 1)
+            cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
         
-    cv2.imwrite(result_path + '/%d.jpg' %(i+419), img)
+        cv2.imwrite(result_path + '/%d.jpg' %i, img)
 
 
 print("the number of vheicles in this video is:", tracker.vheicle_count)

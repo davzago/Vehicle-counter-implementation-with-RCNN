@@ -56,8 +56,8 @@ class Detector():
                     x,y,w,h = cv2.boundingRect(center)
                     top_left = (x,y)
                     bottom_right = (x+w,y+h)
-                    rec.append((top_left, bottom_right))
-                    cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)                 
+                    rec.append([x, y, w, h])
+                    #cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)                 
                         
             
             self.rects.append(rec)
