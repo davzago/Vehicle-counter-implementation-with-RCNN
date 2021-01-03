@@ -26,7 +26,16 @@ The ideal scenario for this method is having two images one showing just the bac
 To perform **Image differencing** first of all we convert the frames in question in gray scale, this allows us to avoid to deal with a multichannel image, the result is basically a matrix where each value represents the intensity of a pixel in the image from 0 to 255.
 After this simple step we can proceed to compute the **abs difference** between the two matrices, if the result for a specific element is 0 it means that the same pixel in two consecutive frames had the same intensity and so its contained in the background meanwhile if the result is higher then 0 probably that pixel is part of a moving object. (#EXAMPLE OF GRAYSCALE IMG DIFFERENCE)
 
-Now that we have the image containing only the moving object we need a way to draw a bounding box around it, to do so we first need   
+Now that we have the image containing only the moving object we need a way to draw a bounding box around it, to do so we will use the open cv function *findcontours* but first we need to transform the gray scale image we have into a binary image.
+A binary image is an image consisting in pixel wich value is either 0 or 1, this transformation allows the open cv function to check for contours of the objects just by checking where pixels shift from 0 to 1.
+In order to transform our image into a binary image we use **thresholding**, this procedure consists in setting a threshold for the intensity of the pixels and put to 0 every pixel below the value and to 1 every pixel above the value.
+Setting the right threshold is important, in fact using a low value could highlight unwanted noise meanwhile a high value could result in hiding some parts of an object so we had to find the right parameter.(#THRESHOLDING IMAGE MAYBE WITH DIFFERENT THRESHOLDS)
+
+Before finally obtaining the contours and consequentially the bounding boxes we dilate the obtained object, by dilating the objects we usually obtain a better object, filling some 0 pixels inside the objects, this can help us to finding better contours and avoid selecting a black part of the object as contour.
+Practically dilating is done by applying convolution using a kernel containing ones, this operation replaces each pixel value with the maximum pixel value overlapped by the kernel.
+By playing with the kernel dimension we see that the bigger it is the more dilated the lines are, having a bigger dilatation is useful to create one single "blob" for one vehicle but by having it too big the risk is to create one single blob of one or more vehicles if they are close, this is a parameter that could differ between videos, for example in a road with heavy traffic and a far camera the kernel has to be smaller meanwhile if the camera is closer and there is no heavy traffic we could use a bigger kernel.(#IMGAGE OF DILATATION USING DIFFERENT KERNELS MEYBE SHOWING 2 VEHICLES OVERLAPPING)
+
+Finally we can obtain our contours, using the open cv *findContours* we obtain the contours in the binary image, the retrival method decides wheter to get all the contours heirarchy (cv2.RETR_TREE) which baiscally is a tree where a more external contour has some son contours internally, in our case i think it's better to keep only the external contours since we only need a bounding box for the veichles
 
 ## Tracking
 
