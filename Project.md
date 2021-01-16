@@ -34,7 +34,7 @@ cv2.findContours() finds the contours in a binary image, the retrival method dec
 
 ## Obtain a more clear difference
 
-- The threshold used to transform the grayscale image and the size og the dilate kernel are two parameters wich are important in order to have a good detection, also they have to be tuned together, a high threshold leads us to not include some parts of the veichle risking multiple detection for trucks, dilatation can compensate for that but if we choose a kernel that is too big we risk to agglomerate more veichles 
+- The threshold used to transform the grayscale image and the size of the dilate kernel are two parameters wich are important in order to have a good detection, also they have to be tuned together, a high threshold leads us to not include some parts of the veichle risking multiple detection for trucks, dilatation can compensate for that but if we choose a kernel that is too big we risk to agglomerate more veichles 
 - to emiminte the part of the background that goes trough the difference we could also not search for veichles in a specific area but this is not possible in the lanes otherwise we would not find veichles
 - Also to obtain a better difference i subtract frames that are 10 frames apart
 

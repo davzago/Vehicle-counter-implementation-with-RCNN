@@ -33,9 +33,34 @@ Setting the right threshold is important, in fact using a low value could highli
 
 Before finally obtaining the contours and consequentially the bounding boxes we dilate the obtained object, by dilating the objects we usually obtain a better object, filling some 0 pixels inside the objects, this can help us to finding better contours and avoid selecting a black part of the object as contour.
 Practically dilating is done by applying convolution using a kernel containing ones, this operation replaces each pixel value with the maximum pixel value overlapped by the kernel.
-By playing with the kernel dimension we see that the bigger it is the more dilated the lines are, having a bigger dilatation is useful to create one single "blob" for one vehicle but by having it too big the risk is to create one single blob of one or more vehicles if they are close, this is a parameter that could differ between videos, for example in a road with heavy traffic and a far camera the kernel has to be smaller meanwhile if the camera is closer and there is no heavy traffic we could use a bigger kernel.(#IMGAGE OF DILATATION USING DIFFERENT KERNELS MEYBE SHOWING 2 VEHICLES OVERLAPPING)
+By playing with the kernel dimension we see that the bigger it is the more dilated the lines are, having a bigger dilatation is useful to create one single "blob" for one vehicle but by having it too big the risk is to create one single blob of one or more vehicles if they are close, this is a parameter that could differ between videos, for example in a road with heavy traffic and a far camera the kernel has to be smaller meanwhile if the camera is closer and there is no heavy traffic we could use a bigger kernel.(#IMGAGE OF DILATATION USING DIFFERENT KERNELS MAYBE SHOWING 2 VEHICLES OVERLAPPING)
 
-Finally we can obtain our contours, using the open cv *findContours* we obtain the contours in the binary image, the retrival method decides wheter to get all the contours heirarchy (cv2.RETR_TREE) which baiscally is a tree where a more external contour has some son contours internally, in our case i think it's better to keep only the external contours since we only need a bounding box for the veichles
+<img src="/home/davide/Documenti/Vision/Paper/images/no_dilatation.jpg" alt="no_dilatation" style="zoom: 50%;" /><img src="/home/davide/Documenti/Vision/Paper/images/good_dilatation.jpg" alt="good_dilatation" style="zoom: 50%;" /><img src="/home/davide/Documenti/Vision/Paper/images/too_dilated.jpg" alt="too_dilated" style="zoom:50%;" />
+
+Finally we can obtain our contours, using the open cv *findContours* method we obtain the contours in the binary image, the retrieval method decides whether to get all the contours hierarchy or not, the hierarchy  basically is a tree where a more external contour has some son contours internally, in our case we think it's better to keep only the external contours since we only need a bounding box for the vehicles and taking internal contours could highlight some inner parts of in which we are not interested
+
+Once obtained the contour we use the boundRect method from open cv to obtain our bounding box, this procedure is repeated for each frame of the of the video and since for each step we use two frames the number of frames for the result is n-1 where n is the number of frames of the video.
+
+### Experiment
+
+- video chosen for the detection
+
+- performance in term of detection and time
+- bad things (trucks not well detected or multiple detection), when cars are close they can be picked up as a single objects. background picked up
+- how to kinda fix and find the balance between this problems
+
+We applied the previously described procedure to a video that can be found on youtube (LINK), we will use the same video for the next experiments as well, the cars are detected quite well and for a video containing 1800 frames in 800x360 resolution the detection is done in 10.5 seconds, this allows this method to be used in real time applications since the video is 30 seconds long (#CHECK).
+
+<img src="/home/davide/Documenti/Vision/Paper/images/well_tracked.jpg" alt="well_tracked" style="zoom:70%;" />
+
+There are also some problems with this method, first of all it doesn't deal with occlusion hence when a vehicle is behind another one, the  detector will find a single blob resulting in a single bounding box, the single detection of two vehicles can happen also when vehicles are very close to each other, in this case the dilate operation can make so the blobs representing the vehicles touch each other resulting in a single blob. Another problem is the detection of trucks, in particular the side of this kind of vehicles is usually wide and monochromatic, this makes so the frame difference in this area results in pixels with intensity close to zero and so when thresholding they are seen as background, because of this the binary image of the trucks shows some separated areas and this leads us to have multiple detection. <img src="/home/davide/Documenti/Vision/Paper/images/multiple_truck.jpg" alt="multiple_truck" style="zoom:50%;" /><img src="/home/davide/Documenti/Vision/Paper/images/truck_blob.jpg" alt="truck_blob" style="zoom:50%;" />
+
+This could be solved by increasing the dimension of the kernel but this would increase the possibility of agglomerating multiple vehicles in a single blob so we found a balance setting the dilate kernel to a 3x3 keeping in mind that this parameter should be changed if using videos with different resolution. 
+
+If the camera moves, for example due to wind, this method will also detect the background as vehicle, this happens because even if an object is stationary it will appear in slightly different position when the camera is shaking, this makes so the difference between frames on specific areas of the background is not close to zero and so it gets detected.
+This problem is clear in the initial frames of the video where the camera shakes and there isn't any definitive solution for this problem but in order to mitigate it we decided to only use bounding boxes that have an area higher than sixty pixels, this also helped with the problem of multiple detections for trucks.
+
+<img src="/home/davide/Documenti/Vision/Paper/images/gray_guard.jpg" alt="gray_guard" style="zoom:50%;" /><img src="/home/davide/Documenti/Vision/Paper/images/binary_guard.jpg" alt="binary_guard" style="zoom:50%;" /><img src="/home/davide/Documenti/Vision/Paper/images/guardrail_detection.jpg" alt="guardrail_detection" style="zoom:50%;" />
 
 ## Tracking
 

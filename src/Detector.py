@@ -21,7 +21,7 @@ class Detector():
     def img_diff(self, img1, img2):
         # first we convert the frame to grayscale
         frame1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-        frame2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY) # added skip frame to have better differences
+        frame2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
         # then we compute the difference between the 2 images
         diff = cv2.absdiff(frame1,frame2)
         return diff
@@ -32,7 +32,7 @@ class Detector():
     # dilatation is used in order to unify fragmented regions and help the detection
     def threshold_and_dilate(self, diff):
         _, thresh = cv2.threshold(diff, 55, 255, cv2.THRESH_BINARY)
-        kernel = np.ones((3, 3),np.uint8)
+        kernel = np.ones((3,3),np.uint8)
         dilated = cv2.dilate(thresh, kernel, iterations=1)
         self.diff_images.append(dilated)
 
@@ -51,11 +51,11 @@ class Detector():
             contours, _ = cv2.findContours(self.diff_images[i], cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
             #cv2.drawContours(self.diff_images[i], contours, -1, (127,200,0), 2)
             rec = []
-            for _, center in enumerate(contours):
-                if cv2.contourArea(center) > 600: # this makes so we only take useful contours
-                    x,y,w,h = cv2.boundingRect(center)
-                    top_left = (x,y)
-                    bottom_right = (x+w,y+h)
+            for _, poly in enumerate(contours):
+                if cv2.contourArea(poly) > 600: # this makes so we only take useful contours, avoids bbox with a small area
+                    x,y,w,h = cv2.boundingRect(poly)
+                    #top_left = (x,y)
+                    #bottom_right = (x+w,y+h)
                     rec.append([x, y, w, h])
                     #cv2.rectangle(self.diff_images[i], top_left, bottom_right, (127,200,0), 1)                 
                         

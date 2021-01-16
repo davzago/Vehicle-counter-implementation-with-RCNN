@@ -11,7 +11,7 @@ import os
 
 #array of colors corresponding to each class of vehicle
 # verde - 
-colors = [(0,255,0), (0,255,255), (0,0,255), (255,0,255), (0,102,205), (0,255,255), (0,128,255), (255,0,127)]  
+colors = [(0,255,0), (255,255,0), (0,0,255), (255,0,255), (0,102,205), (0,255,255), (0,128,255), (255,0,127)]  
 
 #array that maps each label to the correct category
 #categories = ["A truck", "Background", "Bus", "Car", "Motorcycle", "Pickup", "SU truck", "Van"]
@@ -65,20 +65,25 @@ if args.output:
 tracker = Tracker()
 
 if not args.RCNN: 
-    detector = Detector(input_path) 
+    start = time.time()
+    detector = Detector(input_path)
     detector.detect(temp_path) 
+    end = time.time()
+    print("detection time is:", end-start)
     delete_temp_items(temp_path)
 
     for i in range(0,len(detector.rects)):
         centers = tracker.update(detector.rects[i])
         img = cv2.imread(input_path +"/%d.jpg" %i)
         for j in range(0,len(detector.rects[i])):
-            cv2.rectangle(img, (detector.rects[i][j][0], detector.rects[i][j][1]), (detector.rects[i][j][0]+detector.rects[i][j][2],detector.rects[i][j][1]+detector.rects[i][j][3]), (0, 255, 0), 1)
-        for c_id, c in centers.items():
+            cv2.rectangle(img, (detector.rects[i][j][0], detector.rects[i][j][1]), (detector.rects[i][j][0]+detector.rects[i][j][2],detector.rects[i][j][1]+detector.rects[i][j][3]), colors[0], 1)
+            """text = "Vehicle"
+            #cv2.putText(img, text, (detector.rects[i][j][0], detector.rects[i][j][1]-5),
+                            cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, colors[0], 1)"""
+        """for c_id, c in centers.items():
             text = "ID{}".format(c_id)
-            cv2.putText(img, text, (c[0] - 10, c[1] - 10),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-            cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
+            cv2.putText(img, text, (c[0] - 10, c[1]),
+                            cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, colors[0], 1)"""
         
         cv2.imwrite(result_path + '/%d.jpg' % i, img)
 
