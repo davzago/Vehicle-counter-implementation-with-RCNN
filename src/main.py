@@ -70,7 +70,7 @@ if not args.RCNN:
     detector.detect(temp_path) 
     end = time.time()
     print("detection time is:", end-start)
-    delete_temp_items(temp_path)
+    #delete_temp_items(temp_path)
 
     for i in range(0,len(detector.rects)):
         centers = tracker.update(detector.rects[i])
