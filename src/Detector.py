@@ -34,7 +34,7 @@ class Detector():
         _, thresh = cv2.threshold(diff, 20, 255, cv2.THRESH_BINARY)
         kernel = np.ones((3,3),np.uint8)
         dilated = cv2.dilate(thresh, kernel, iterations=1)
-        self.diff_images.append(diff)
+        self.diff_images.append(dilated)
 
     def save_diff_images(self, path):
         is_dir = os.path.isdir(path) 
