@@ -3,7 +3,7 @@ from collections import OrderedDict
 import numpy as np
 
 class Tracker():
-    def __init__(self, max_dis_frames=5, min_travel_distance=40):
+    def __init__(self, max_dis_frames=5, min_travel_distance=100):
         # initialize the id that will be given to objects (the first id is 0)
         self.objectID = 0
         # initializing the dictionary wich will contain the centers of the rectangles in the present frame
@@ -70,25 +70,26 @@ class Tracker():
             used_rows = set()
             used_cols = set()
             # for each zipped col and rows
-            #ci sono più righe che colonne quindi lo zip cosa fa?
             for row, col in zip(rows, cols):
                 # we check if we already used the row or the col, if so we skip this cycle 
                 if row in used_rows or col in used_cols:
                     continue
                 # if row and col are not used we update the object corresponding to the row
                 # with the new center corresponding to the col and set the frames disappeared to 0
-                objectID = objectIDs[row]
-                self.objects[objectID] = centers[col]
-                self.dis_objects[objectID] = 0
-                used_rows.add(row)
-                used_cols.add(col)
+                if distance[row,col] < 40: # if old center and new center are too fare we don't updat
+                    objectID = objectIDs[row]
+                    self.objects[objectID] = centers[col]
+                    self.dis_objects[objectID] = 0
+                    used_rows.add(row)
+                    used_cols.add(col)
             # we update the vheicle count after updating the distances traveled by the register objects
             for key in objectIDs:
                 if key in self.initial_position:
-                   d = dist.euclidean(self.initial_position[key], self.objects[key])
-                   if d > self.min_travel_distance:
+                   d_tot = dist.euclidean(self.initial_position[key], self.objects[key])
+                   if d_tot > self.min_travel_distance:
                        self.vheicle_count += 1 
-                       del self.initial_position[key]         
+                       del self.initial_position[key] 
+      
             # the unused rows are disappeared object so we update dis_object with the id corresponding to the row
             # the unused cols are new objects that need to be registered       
             unused_rows = set(range(0,distance.shape[0])).difference(used_rows)

@@ -31,8 +31,8 @@ class Detector():
     # the ones which values is higher are set to 255
     # dilatation is used in order to unify fragmented regions and help the detection
     def threshold_and_dilate(self, diff):
-        _, thresh = cv2.threshold(diff, 20, 255, cv2.THRESH_BINARY)
-        kernel = np.ones((3,3),np.uint8)
+        _, thresh = cv2.threshold(diff, 55, 255, cv2.THRESH_BINARY)
+        kernel = np.ones((5,5),np.uint8)
         dilated = cv2.dilate(thresh, kernel, iterations=1)
         self.diff_images.append(dilated)
 

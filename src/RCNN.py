@@ -73,7 +73,7 @@ def detect(input_path, temp_path):
     probs = []
     final_labels = []
     n_frames = len(os.listdir(input_path))
-    for i in range(400,420):
+    for i in range(0, n_frames):
         model = keras.models.load_model('models/bigger_negative_resnet.h5')
         img_original = cv2.imread(input_path + "/%d.jpg" %i)
         maxX = len(img_original[0])
