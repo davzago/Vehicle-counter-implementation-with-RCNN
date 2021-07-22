@@ -76,12 +76,12 @@ if not args.RCNN:
         centers = tracker.update(detector.rects[i])
         img = cv2.imread(input_path +"/%d.jpg" %i)
         for j in range(0,len(detector.rects[i])):
-            cv2.rectangle(img, (detector.rects[i][j][0], detector.rects[i][j][1]), (detector.rects[i][j][0]+detector.rects[i][j][2],detector.rects[i][j][1]+detector.rects[i][j][3]), colors[0], 2)
+            cv2.rectangle(img, (detector.rects[i][j][0], detector.rects[i][j][1]), (detector.rects[i][j][0]+detector.rects[i][j][2],detector.rects[i][j][1]+detector.rects[i][j][3]), colors[0], 1)
             #text = "Vehicle"
             #cv2.putText(img, text, (detector.rects[i][j][0], detector.rects[i][j][1]-5),
                             #cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, colors[0], 1)
         for c_id, c in centers.items():
-            text = "ID{}".format(c_id)
+            text = "{}".format(c_id)
             cv2.putText(img, text, (c[0] - 10, c[1]),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.4, colors[0], 1)
         
@@ -91,20 +91,20 @@ if args.RCNN:
     vheicles, labels, probs = detect(input_path, temp_path)
     for i in range(0,len(vheicles)):
         centers = tracker.update(vheicles[i])
-        img = cv2.imread(input_path + "/%d.jpg" %i)
+        img = cv2.imread(input_path + "/%d.jpg" %(i+85))
         for j in range(0,len(vheicles[i])):
             color = colors[labels[i][j]]
             cat = categories[labels[i][j]]
-            cv2.rectangle(img, (vheicles[i][j][0], vheicles[i][j][1]), (vheicles[i][j][0]+vheicles[i][j][2],vheicles[i][j][1]+vheicles[i][j][3]), color, 2)
+            cv2.rectangle(img, (vheicles[i][j][0], vheicles[i][j][1]), (vheicles[i][j][0]+vheicles[i][j][2],vheicles[i][j][1]+vheicles[i][j][3]), color, 1)
             #cv2.putText(img, cat, (vheicles[i][j][0], vheicles[i][j][1]-5),
                             #cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, color, 1)
         for c_id, c in centers.items():
             text = "ID{}".format(c_id)
-            cv2.putText(img, text, (c[0], c[1]),
-                            cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, (0, 255, 0), 1)
+            #cv2.putText(img, text, (c[0], c[1]),
+                            #cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5, (0, 255, 0), 1)
             #cv2.circle(img, (c[0],c[1]), 4, (0, 255, 0), -1)
         
-        cv2.imwrite(result_path + '/%d.jpg' %i, img)
+        cv2.imwrite(result_path + '/%d.jpg' %(i+85), img)
 
 
 print("the number of vheicles in this video is:", tracker.vheicle_count)
